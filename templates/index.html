@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>유튜브 시청기록 분석</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js" integrity="sha512-X7tfqe3SmE/XXTi4IV6HX4rHrbEldpb3avU8Xop+BB3ALbVbbXUE+/Wgh1sj/WVtJMhDJSFSCiaUrkca3JXjCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h1>유튜브 시청기록 카테고리 및 세부 주제 분석</h1>
+    
+    <!-- 전처리된 데이터 미리보기  -->
+    {% if preview_data %}
+    <h2>전처리된 데이터 미리보기</h2>
+    <table border="1">
+        <tr>
+            {% for key in preview_data[0].keys() %}
+                <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in preview_data %}
+            <tr>
+                {% for value in row.values() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if categories %}
+    <h2>분석 결과</h2>
+    <table border="1">
+        <tr>
+            <th>카테고리</th>
+            <th>하위 주제</th>
+            <th>영상 개수</th>
+        </tr>
+        {% for cat, subtopics in categories.items() %}
+            {% for subtopic, count in subtopics.items() %}
+            <tr>
+                <td>{{ cat }}</td>
+                <td>{{ subtopic }}</td>
+                <td>{{ count }}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if df_global_ready %}
+    <h2>새로운 영상 URL 분석</h2>
+    <form action="/predict" method="post">
+        <label>유튜브 영상 링크:</label>
+        <input type="text" name="video_url" placeholder="https://www.youtube.com/watch?v=..." required>
+        <button type="submit">카테고리 예측</button>
+    </form>
+    {% endif %}
+
+    {% if predicted_category %}
+    <h3>예측 결과: {{ predicted_category }} (하위주제: {{ predicted_subtopic }})</h3>
+    {% endif %}
+
+
+</body>
+</html>

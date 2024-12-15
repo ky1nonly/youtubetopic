@@ -1,0 +1,13 @@
+Flask==2.2.5
+flask-socketio==5.3.3
+eventlet==0.33.0
+torch==2.4.1
+transformers==4.32.0
+pandas==2.0.3
+requests==2.31.0
+scikit-learn==1.2.2
+numpy==1.24.3
+python-dotenv==1.0.0
+sentence-transformers==2.2.2
+huggingface_hub==0.12.1
+protobuf==3.20.3
